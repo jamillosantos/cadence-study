@@ -12,15 +12,15 @@ import (
 
 func main() {
 	if len(os.Args) < 3 {
-		panic("invalid usage: taskcompleter <task token> <response code>")
+		panic("invalid usage: taskcompleter <response code> <task token>")
 	}
 
-	taskToken, err := hex.DecodeString(os.Args[1])
+	responseCode := os.Args[1]
+
+	taskToken, err := hex.DecodeString(os.Args[2])
 	if err != nil {
 		panic("invalid taskToken")
 	}
-
-	responseCode := os.Args[2]
 
 	var responseErr error
 	if responseCode == "error" {

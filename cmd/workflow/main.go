@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/satori/go.uuid"
@@ -43,8 +45,8 @@ func startWorkflow(h *cadence.SampleHelper) {
 		panic(err)
 	}
 
-	fmt.Println(result)
-	fmt.Println(result)
-	fmt.Println(result)
-	fmt.Println(result)
+	fmt.Println()
+	fmt.Print("Result: ")
+	_ = json.NewEncoder(os.Stdout).Encode(&result)
+	fmt.Println()
 }

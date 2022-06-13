@@ -17,8 +17,8 @@ type ReserveRequest struct {
 }
 
 type ReserveResponse struct {
-	TransactionID string
-	OperationID   string
+	ResponseCode  string `json:"response_code"`
+	TransactionID string `json:"transaction_id"`
 }
 
 const (
@@ -66,6 +66,6 @@ func ReserveWorkflow(ctx workflow.Context, request ReserveRequest) (ReserveRespo
 
 	return ReserveResponse{
 		TransactionID: createDatabaseEntriesResponse.TransactionID,
-		OperationID:   "",
+		ResponseCode:  doExternalRequestResponse.ResponseCode,
 	}, nil
 }

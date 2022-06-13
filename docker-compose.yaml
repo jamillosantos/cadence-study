@@ -1,21 +1,20 @@
-version: "3"
+version: '3'
 services:
-  cassandra:
-    image: cassandra:3.11
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: cadence
+      POSTGRES_PASSWORD: cadence
     ports:
-      - "9042:9042"
+      - "5432:5432"
   #prometheus:
   #  image: prom/prometheus:latest
   #  volumes:
-  #    - ./prometheus_config.yml:/etc/prometheus/prometheus.yml
+  #    - ./prometheus:/etc/prometheus
   #  command:
-  #    - "--config.file=/etc/prometheus/prometheus.yml"
+  #    - '--config.file=/etc/prometheus/prometheus.yml'
   #  ports:
-  #    - "9090:9090"
-  node-exporter:
-    image: prom/node-exporter
-    ports:
-      - "9100:9100"
+  #    - '9090:9090'
   cadence:
     image: ubercadence/server:master-auto-setup
     ports:
@@ -29,15 +28,19 @@ services:
       - "7939:7939"
       - "7833:7833"
     environment:
-      - "CASSANDRA_SEEDS=cassandra"
+      - "DB=postgres"
+      - "DB_PORT=5432"
+      - "POSTGRES_USER=cadence"
+      - "POSTGRES_PWD=cadence"
+      - "POSTGRES_SEEDS=postgres"
       - "PROMETHEUS_ENDPOINT_0=0.0.0.0:8000"
       - "PROMETHEUS_ENDPOINT_1=0.0.0.0:8001"
       - "PROMETHEUS_ENDPOINT_2=0.0.0.0:8002"
       - "PROMETHEUS_ENDPOINT_3=0.0.0.0:8003"
       - "DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development.yaml"
     depends_on:
-      - cassandra
-  #    - prometheus
+      - postgres
+      - prometheus
   cadence-web:
     image: ubercadence/web:latest
     environment:
@@ -52,4 +55,4 @@ services:
   #  depends_on:
   #    - prometheus
   #  ports:
-  #    - "3000:3000"
+  #    - '3000:3000'
